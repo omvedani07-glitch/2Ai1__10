@@ -1,286 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survival Predictor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
 
-<title>Titanic AI Predictor</title>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 480px;
+            backdrop-filter: blur(10px);
+        }
 
-<style>
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
 
-/* 🔥 RESET */
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-body{
-    font-family: 'Poppins', sans-serif;
-    height:100vh;
-    overflow:hidden;
-    background: radial-gradient(circle at top, #0f2027, #203a43, #000);
-    color:white;
-}
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 14px;
+            font-weight: 500;
+        }
 
-/* 🌌 PARTICLE BACKGROUND */
-canvas{
-    position:fixed;
-    top:0;
-    left:0;
-    z-index:0;
-}
+        input[type="number"], select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #f9f9f9;
+        }
 
-/* 🚢 FLOATING SHIP */
-.ship{
-    position:absolute;
-    bottom:120px;
-    left:-200px;
-    font-size:50px;
-    animation: sail 25s linear infinite;
-}
+        input[type="number"]:focus, select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+            outline: none;
+            background-color: #fff;
+        }
 
-@keyframes sail{
-    0%{ left:-200px; }
-    100%{ left:120%; }
-}
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
 
-/* 🌊 GLASS CARD */
-.container{
-    position:relative;
-    z-index:2;
-    width:380px;
-    margin:auto;
-    top:50%;
-    transform:translateY(-50%);
-    padding:35px;
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
 
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(20px);
-
-    border-radius:25px;
-    box-shadow: 
-        0 0 40px rgba(0,255,255,0.2),
-        inset 0 0 20px rgba(255,255,255,0.1);
-
-    animation: float 6s ease-in-out infinite;
-}
-
-@keyframes float{
-    0%,100%{ transform:translateY(-50%) translateY(0); }
-    50%{ transform:translateY(-50%) translateY(-10px); }
-}
-
-/* 🧠 TITLE */
-h1{
-    font-family:'Orbitron', sans-serif;
-    text-align:center;
-    margin-bottom:20px;
-    letter-spacing:2px;
-    text-shadow:0 0 10px cyan;
-}
-
-/* INPUT GROUP */
-.input-group{
-    position:relative;
-    margin:15px 0;
-}
-
-input, select{
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:12px;
-    outline:none;
-    background: rgba(255,255,255,0.1);
-    color:white;
-    font-size:14px;
-    transition:0.3s;
-}
-
-/* glow focus */
-input:focus, select:focus{
-    box-shadow:0 0 10px cyan;
-    transform:scale(1.05);
-}
-
-/* 🔥 BUTTON */
-button{
-    width:100%;
-    padding:14px;
-    border:none;
-    border-radius:15px;
-    font-size:16px;
-    color:white;
-    cursor:pointer;
-
-    background: linear-gradient(270deg,#00f2fe,#4facfe,#00f2fe);
-    background-size:600% 600%;
-    animation: gradient 6s ease infinite;
-
-    margin-top:15px;
-    position:relative;
-    overflow:hidden;
-}
-
-@keyframes gradient{
-    0%{background-position:0%}
-    50%{background-position:100%}
-    100%{background-position:0%}
-}
-
-/* shine effect */
-button::before{
-    content:'';
-    position:absolute;
-    top:0;
-    left:-100%;
-    width:100%;
-    height:100%;
-    background:linear-gradient(120deg,transparent,rgba(255,255,255,0.6),transparent);
-}
-
-button:hover::before{
-    left:100%;
-    transition:0.6s;
-}
-
-button:hover{
-    transform:scale(1.08);
-    box-shadow:0 0 20px cyan;
-}
-
-/* LOADER */
-.loader{
-    display:none;
-    text-align:center;
-    margin-top:15px;
-    font-size:14px;
-    color:#00f2fe;
-}
-
-/* FOOTER TEXT */
-.footer{
-    text-align:center;
-    margin-top:10px;
-    font-size:12px;
-    opacity:0.7;
-}
-
-</style>
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- 🌌 PARTICLE CANVAS -->
-<canvas id="particles"></canvas>
+    <div class="card">
+        <h2>Survival Prediction Model</h2>
+        <form action="/predict" method="POST">
+            
+            <div class="grid-2">
+                <div class="form-group">
+                    <label for="Sex">Gender</label>
+                    <select name="Sex" id="Sex" required>
+                        <option value="" disabled selected>Select...</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
 
-<!-- 🚢 SHIP -->
-<div class="ship">🚢</div>
+                <div class="form-group">
+                    <label for="Pclass">Passenger Class</label>
+                    <select name="Pclass" id="Pclass" required>
+                        <option value="" disabled selected>Select...</option>
+                        <option value="1">1st Class</option>
+                        <option value="2">2nd Class</option>
+                        <option value="3">3rd Class</option>
+                    </select>
+                </div>
+            </div>
 
-<!-- 🧠 MAIN UI -->
-<div class="container">
+            <div class="grid-2">
+                <div class="form-group">
+                    <label for="Age">Age</label>
+                    <input type="number" step="0.1" name="Age" id="Age" placeholder="e.g., 25" required>
+                </div>
 
-<h1>AI PREDICTOR</h1>
+                <div class="form-group">
+                    <label for="Fare">Ticket Fare ($)</label>
+                    <input type="number" step="0.01" name="Fare" id="Fare" placeholder="e.g., 50.00" required>
+                </div>
+            </div>
 
-<form action="/predict" method="post" onsubmit="showLoader()">
+            <div class="grid-2">
+                <div class="form-group">
+                    <label for="SibSp">Siblings/Spouses</label>
+                    <input type="number" name="SibSp" id="SibSp" value="0" min="0" required>
+                </div>
 
-<div class="input-group">
-<input type="number" name="Pclass" placeholder="Passenger Class" required>
-</div>
+                <div class="form-group">
+                    <label for="Parch">Parents/Children</label>
+                    <input type="number" name="Parch" id="Parch" value="0" min="0" required>
+                </div>
+            </div>
 
-<div class="input-group">
-<select name="Sex" required>
-<option disabled selected>Select Gender</option>
-<option value="male">Male</option>
-<option value="female">Female</option>
-</select>
-</div>
-
-<div class="input-group">
-<input type="number" step="any" name="Age" placeholder="Age" required>
-</div>
-
-<div class="input-group">
-<input type="number" name="SibSp" placeholder="Siblings / Spouses" required>
-</div>
-
-<div class="input-group">
-<input type="number" name="Parch" placeholder="Parents / Children" required>
-</div>
-
-<div class="input-group">
-<input type="number" step="any" name="Fare" placeholder="Fare" required>
-</div>
-
-<button type="submit">🚀 Predict Survival</button>
-
-<div class="loader" id="loader">🔮 AI is thinking...</div>
-
-</form>
-
-<div class="footer">Powered by Machine Learning</div>
-
-</div>
-
-<!-- ⚡ PARTICLE ANIMATION -->
-<script>
-
-const canvas = document.getElementById("particles");
-const ctx = canvas.getContext("2d");
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let particles = [];
-
-for(let i=0;i<80;i++){
-    particles.push({
-        x: Math.random()*canvas.width,
-        y: Math.random()*canvas.height,
-        r: Math.random()*2,
-        d: Math.random()*1
-    });
-}
-
-function draw(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    ctx.fillStyle="rgba(0,255,255,0.5)";
-    ctx.beginPath();
-
-    for(let i=0;i<particles.length;i++){
-        let p = particles[i];
-        ctx.moveTo(p.x,p.y);
-        ctx.arc(p.x,p.y,p.r,0,Math.PI*2,true);
-    }
-
-    ctx.fill();
-    update();
-}
-
-function update(){
-    for(let i=0;i<particles.length;i++){
-        let p = particles[i];
-        p.y += p.d;
-
-        if(p.y > canvas.height){
-            particles[i].y = 0;
-            particles[i].x = Math.random()*canvas.width;
-        }
-    }
-}
-
-setInterval(draw,33);
-
-/* loader */
-function showLoader(){
-    document.getElementById("loader").style.display="block";
-}
-
-</script>
+            <button type="submit" class="btn-submit">Run Prediction</button>
+        </form>
+    </div>
 
 </body>
 </html>
