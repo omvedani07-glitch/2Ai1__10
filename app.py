@@ -7,7 +7,8 @@ app = Flask(__name__)
 
 # ✅ Load Model
 MODEL_PATH = "model.pkl"
-
+scaler = pickle.load(open("scaler.pkl","rb"))
+features = scaler.transform(features)
 try:
     model = pickle.load(open(MODEL_PATH, "rb"))
     print("✅ Model Loaded Successfully")
