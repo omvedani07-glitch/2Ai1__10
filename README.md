@@ -1,8 +1,20 @@
 # 🚢 Titanic Survival Prediction
 
-## 👥 Team Members
+---
 
-(Write your 7 members names here)
+## 👥 Team Members (7 Members)
+
+| Name    |           Role           |
+| ------  |--------------------------|   
+| Om    | Project Lead             |
+| om   | feature engineering      |
+| on   | Frontend Developer       |
+| om   | EDA              |
+| shashivardhan   | Data Preprocessing       |
+| K U Ashvwandh| model building | 
+| Afrath isma   | model evalution|  
+| om  | model deployment            |
+| om   | Documentation & Testing  |
 
 ---
 
